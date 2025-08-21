@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ブロスタ アカウント自動査定</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #e9ffe9;
+      border: 1px solid #b2ffb2;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #2e7d32;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>ブロスタ アカウント自動査定</h2>
+    
+    <label>アカウント作成年</label>
+    <input type="number" id="year" placeholder="例: 2020">
+
+    <label>アカウント保護</label>
+    <select id="protection">
+      <option value="no">なし</option>
+      <option value="yes">あり</option>
+    </select>
+
+    <label>メアド変更</label>
+    <select id="emailChange">
+      <option value="yes">可能</option>
+      <option value="no">不可</option>
+    </select>
+
+    <label>最高トロフィー</label>
+    <input type="number" id="maxTrophy" placeholder="例: 25000">
+
+    <label>シーズン最高トロフィー</label>
+    <input type="number" id="seasonTrophy" placeholder="例: 20000">
+
+    <label>キャラクター開放数</label>
+    <input type="number" id="characters" placeholder="例: 60">
+
+    <label>パワー11の数</label>
+    <input type="number" id="power11" placeholder="例: 10">
+
+    <button onclick="calculate()">査定する</button>
+
+    <div id="result" class="result" style="display:none;"></div>
+  </div>
+
+  <script>
+    function calculate() {
+      let year = parseInt(document.getElementById('year').value) || 0;
+      let protection = document.getElementById('protection').value;
+      let seasonTrophy = parseInt(document.getElementById('seasonTrophy').value) || 0;
+      let characters = parseInt(document.getElementById('characters').value) || 0;
+      let power11 = parseInt(document.getElementById('power11').value) || 0;
+
+      let resultDiv = document.getElementById('result');
+      resultDiv.style.display = "block";
+
+      // 保護ありなら査定不可
+      if (protection === 'yes') {
+        resultDiv.innerText = "このアカウントは保護されているため、買取不可です。";
+        return;
+      }
+
+      // 査定計算
+      let price = 0;
+      if (year <= 2020 && year > 0) price += 200; // アカウント作成年
+      price += Math.floor(seasonTrophy / 1000) * 50; // シーズン最高トロフィー
+      price += characters * 5; // キャラクター開放数
+      price += power11 * 5; // パワー11の数
+
+      resultDiv.innerText = `推定価格: ${price}円`;
+    }
+  </script>
+</body>
+</html>
